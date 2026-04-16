@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Manage Complaints</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-dark px-3">
+  <span class="navbar-brand">Complaints</span>
+  <a th:href="@{/warden/dashboard}" class="btn btn-light btn-sm">Back</a>
+</nav>
+<div class="container mt-4">
+  <div th:if="${param.updated}" class="alert alert-success">Status updated!</div>
+  <table class="table table-bordered">
+    <thead class="table-dark">
+    <tr><th>Student</th><th>Title</th><th>Description</th><th>Date</th><th>Status</th><th>Update</th></tr>
+    </thead>
+    <tbody>
+    <tr th:each="c : ${complaints}">
+      <td th:text="${c.student.fullName}"></td>
+      <td th:text="${c.title}"></td>
+      <td th:text="${c.description}"></td>
+      <td th:text="${c.raisedDate}"></td>
+      <td th:text="${c.status}"></td>
+      <td>
+        <form method="post" th:action="@{/warden/complaints/update/{id}(id=${c.id})}">
+          <select name="status" class="form-select form-select-sm" style="width:auto;display:inline">
+            <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}"></option>
+          </select>
+          <button class="btn btn-sm btn-primary ms-1">Update</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
