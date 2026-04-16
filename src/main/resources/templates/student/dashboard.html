@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Student Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-primary px-3">
+  <span class="navbar-brand">Hostel MS – Student</span>
+  <div>
+    <a th:href="@{/student/rooms}" class="btn btn-light btn-sm me-2">Rooms</a>
+    <a th:href="@{/student/complaints}" class="btn btn-light btn-sm me-2">Complaints</a>
+    <a th:href="@{/student/payments}" class="btn btn-light btn-sm me-2">Payments</a>
+    <a th:href="@{/auth/logout}" class="btn btn-danger btn-sm">Logout</a>
+  </div>
+</nav>
+<div class="container mt-4">
+  <h4>Welcome, <span th:text="${student.fullName}"></span>!</h4>
+  <div class="row mt-3">
+    <div class="col-md-4">
+      <div class="card text-white bg-info mb-3">
+        <div class="card-body">
+          <h5>My Allocations</h5>
+          <p th:text="${allocations.size()} + ' request(s)'"></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-warning mb-3">
+        <div class="card-body">
+          <h5>My Complaints</h5>
+          <p th:text="${complaints.size()} + ' complaint(s)'"></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-success mb-3">
+        <div class="card-body">
+          <h5>My Payments</h5>
+          <p th:text="${payments.size()} + ' record(s)'"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

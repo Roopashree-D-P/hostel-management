@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Users</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-dark bg-danger px-3">
+    <span class="navbar-brand">Manage Users</span>
+    <a th:href="@{/admin/dashboard}" class="btn btn-light btn-sm">Back</a>
+</nav>
+<div class="container mt-4">
+    <div th:if="${param.success}" class="alert alert-success">User added!</div>
+    <div th:if="${param.deleted}" class="alert alert-warning">User deleted!</div>
+    <h5>Add New User</h5>
+    <form method="post" th:action="@{/admin/users/add}" class="row g-2 mb-4">
+        <div class="col-md-2"><input name="fullName" class="form-control" placeholder="Full Name" required></div>
+        <div class="col-md-2"><input name="username" class="form-control" placeholder="Username" required></div>
+        <div class="col-md-2"><input name="email" class="form-control" placeholder="Email" required></div>
+        <div class="col-md-2"><input name="phone" class="form-control" placeholder="Phone"></div>
+        <div class="col-md-1"><input name="password" type="password" class="form-control" placeholder="Password" required></div>
+        <div class="col-md-2">
+            <select name="role" class="form-select">
+                <option value="STUDENT">Student</option>
+                <option value="WARDEN">Warden</option>
+                <option value="ADMIN">Admin</option>
+            </select>
+        </div>
+        <div class="col-md-1"><button class="btn btn-danger w-100">Add</button></div>
+    </form>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr><th>Name</th><th>Username</th><th>Email</th><th>Role</th><th>Action</th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${users}">
+            <td th:text="${u.fullName}"></td>
+            <td th:text="${u.username}"></td>
+            <td th:text="${u.email}"></td>
+            <td th:text="${u.role}"></td>
+            <td>
+                <form method="post" th:action="@{/admin/users/delete/{id}(id=${u.id})}">
+                    <button class="btn btn-sm btn-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
