@@ -27,6 +27,7 @@
       <td th:text="'₹' + ${room.feePerMonth}"></td>
       <td>
         <form method="post" th:action="@{/student/rooms/request/{id}(id=${room.id})}">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
           <button type="submit" class="btn btn-sm btn-primary">Request</button>
         </form>
       </td>

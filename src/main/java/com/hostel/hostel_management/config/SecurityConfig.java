@@ -14,24 +14,30 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    // Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Authentication provider
     @Bean
-    public DaoAuthenticationProvider authProvider(UserService userService, PasswordEncoder passwordEncoder) {
+    public DaoAuthenticationProvider authProvider(UserService userService,
+                                                  PasswordEncoder passwordEncoder) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userService);
         provider.setPasswordEncoder(passwordEncoder);
         return provider;
     }
 
+    // Security configuration
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            DaoAuthenticationProvider authProvider) throws Exception {
+
         http
                 .authenticationProvider(authProvider)
+
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -39,21 +45,31 @@ public class SecurityConfig {
                         .requestMatchers("/student/**").hasRole("STUDENT")
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
+
+                        // ✅ FIXED SUCCESS HANDLER
                         .successHandler((req, res, auth) -> {
-                            String role = auth.getAuthorities()
-                                    .iterator().next().getAuthority();
-                            if (role.equals("ROLE_ADMIN"))
+
+                            boolean isAdmin = auth.getAuthorities().stream()
+                                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+                            boolean isWarden = auth.getAuthorities().stream()
+                                    .anyMatch(a -> a.getAuthority().equals("ROLE_WARDEN"));
+
+                            if (isAdmin)
                                 res.sendRedirect("/admin/dashboard");
-                            else if (role.equals("ROLE_WARDEN"))
+                            else if (isWarden)
                                 res.sendRedirect("/warden/dashboard");
                             else
                                 res.sendRedirect("/student/dashboard");
                         })
+
                         .permitAll()
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/auth/login?logout")

@@ -12,6 +12,7 @@ public class RoomService implements RoomServiceInterface {
 
     @Autowired private RoomRepository roomRepository;
     @Autowired private RoomAllocationRepository allocationRepository;
+    @Autowired private UserRepository userRepository;
 
     @Override
     public List<Room> getAvailableRooms() {

@@ -16,6 +16,13 @@
                     <div th:if="${param.logout}" class="alert alert-info">Logged out successfully.</div>
                     <div th:if="${param.registered}" class="alert alert-success">Registered! Please login.</div>
                     <div th:if="${param.error}" class="alert alert-danger">Invalid username or password.</div>
+                    <div th:if="${param.logout}" class="alert alert-success">
+                        Logged out successfully!
+                    </div>
+
+                    <div th:if="${param.error}" class="alert alert-danger">
+                        Invalid username or password!
+                    </div>
                     <form method="post" th:action="@{/auth/login}">
                         <div class="mb-3">
                             <label>Username</label>

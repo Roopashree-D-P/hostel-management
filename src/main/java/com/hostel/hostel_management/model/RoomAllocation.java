@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "room_allocations")
 public class RoomAllocation {
 
     @Id
@@ -12,25 +11,24 @@ public class RoomAllocation {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
     private User student;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
     private Room room;
 
     private LocalDate requestDate;
     private LocalDate allocationDate;
 
+    public enum Status {
+        PENDING, APPROVED, REJECTED
+    }
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    public enum Status { PENDING, APPROVED, REJECTED }
-
-    public RoomAllocation() {}
+    // Getters & Setters
 
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
     public User getStudent() { return student; }
     public void setStudent(User student) { this.student = student; }
